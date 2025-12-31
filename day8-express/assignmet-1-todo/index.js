@@ -86,11 +86,18 @@ app.put('/todos/:id',function(req,res){
             let todos=JSON.parse(data);
             let found=false;
                 for(let i=0;i<todos.length;i++){
-                    if(todos[i].id===id){
-                        todos[i].title=todoUpdates.title;
-                        todos[i].completed=todoUpdates.completed;
-                        found=true;
-                    }
+                    if(todos[i].id === id){
+    // 1. Merge the old data with the new data
+                    const updatedTodo = { ...todos[i], ...todoUpdates };
+    
+    // 2. FORCE the ID to remain the original ID (ignoring what the user sent)
+                            updatedTodo.id = id; 
+    
+    // 3. Save it back
+                                todos[i] = updatedTodo;
+    
+                                        found = true;
+}
                 }
                 if(!found){
                     return res.status(404).send("todo not found");
