@@ -1,0 +1,75 @@
+<!-- state and components (framework) comes in the picture we learn rendring
+state are the variable part of an app 
+components are the constant part or how to render the state -->
+
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>to do</title>
+</head>
+<body>
+    <style>
+        body{
+            background-color: grey;
+            text-decoration: wavy;
+        }
+        h1{
+            color: blueviolet;
+        }
+    </style>
+    <input type="text"></input>
+    <button onclick="addTodo()">ADD</button>
+    <button onclick="deleteTodo()">delete FIRST Todo</button>
+    <button onclick="deleteLast()">deleteLast</button>
+    <div id="todos"></div>
+    <script>
+        let todo=[];
+
+        function addTodo(){
+            todo.push({
+                title:document.querySelector("input").value
+            })
+            render()
+        }
+
+        function deleteTodo(){
+            todo.splice(0,1) //todo.pop();
+            render();
+        }
+        function deleteLast(){
+            todo.splice(todo.length -1,1);
+            render()
+        }
+        function deleteCurrent(i){
+            todo.splice(i,1);
+            render();
+
+
+        }
+        function todoComponent(todo,i){
+        
+                const dive=document.createElement("div");
+                const biga=document.createElement("h1");
+                 const buttone=document.createElement("button");
+                buttone.innerHTML="DELETE";
+                buttone.addEventListener("click", () => deleteCurrent(i));
+                biga.innerHTML=todo.title;
+                dive.appendChild(biga);
+                 dive.appendChild(buttone);
+                return dive
+
+           }
+
+        function render(){
+            document.querySelector("#todos").innerHTML="";
+            for(let i=0;i<todo.length;i++){
+                const element=todoComponent(todo[i],i);
+                document.querySelector("#todos").appendChild(element);
+            }
+        }
+    </script>
+    
+</body>
+</html>

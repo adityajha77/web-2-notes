@@ -1,0 +1,38 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>to do</title>
+</head>
+<body>
+    <style>
+        body{
+            background-color: bisque;
+            text-decoration: wavy;
+        }
+        h1{
+            color: blueviolet;
+        }
+    </style>
+    <input type="text">
+    <button onclick="addTodo()">ADD</button>
+    <script>
+        function addTodo(){
+            const value=document.querySelector("input").value;
+            const spanel=document.createElement("span");
+            const buttonel=document.createElement("button");
+            const bigText=document.createElement("h1");
+            bigText.innerHTML="TO DO WEBSITE";
+            spanel.innerHTML=value;
+            buttonel.innerHTML="delete";
+            const divel=document.createElement("div");
+            divel.appendChild(spanel);
+            divel.appendChild(buttonel);
+            document.querySelector("body").appendChild(divel);
+             document.querySelector("body").appendChild(bigText);
+        }
+    </script>
+    
+</body>
+</html>
