@@ -26,3 +26,4 @@ app.listen(3000) //port listen
 // and the nodejs process counts the number of words inside it.
 // cli todo
 //Assignment - Trying to code a filesystem based todo app using expresss
+//http://localhost:3000/sigin/:filename     :colon give wild card any thing will return to same thing 
