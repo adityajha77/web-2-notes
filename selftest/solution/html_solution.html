@@ -1,0 +1,18 @@
+async function loadMessages() {
+    const res = await axios.get('http://localhost:3000/messages');
+    const list = document.getElementById('msgList');
+    list.innerHTML = '';
+    res.data.forEach(msg => {
+        const li = document.createElement('li');
+        li.textContent = `${msg.user}: ${msg.text}`;
+        list.appendChild(li);
+    });
+}
+
+document.getElementById('sendBtn').addEventListener('click', async () => {
+    const user = document.getElementById('username').value;
+    const text = document.getElementById('msgText').value;
+    
+    await axios.post('http://localhost:3000/messages', { user, text });
+    loadMessages(); // Refresh list
+});

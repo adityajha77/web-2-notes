@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>VIP Search</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <h1>VIP Product Search</h1>
+    
+    <input type="text" id="queryInput" placeholder="Search product...">
+    <button id="searchBtn">Search</button>
+
+    <div id="results"></div>
+
+    <script>
+        const resultsDiv = document.getElementById('results');
+
+        // --- TODO 3: Axios with Headers & Params ---
+        // Add click listener to 'searchBtn'.
+        // 1. Get text from input.
+        // 2. Perform an axios.get request to 'http://localhost:3000/search'.
+        // 3. CRITICAL: You must pass a config object as the second argument to axios.get.
+        //    - It needs 'params' for the query (q: inputValue).
+        //    - It needs 'headers' for the auth ('x-vip-token': 'super-secret').
+        // 4. Render the results or alert "Access Denied" if it fails.
+
+        document.getElementById('searchBtn').addEventListener('click', async () => {
+            try {
+                // Write Axios code here...
+                
+                
+                // Render code...
+                // (Clear resultsDiv, loop through response.data, create elements)
+
+            } catch (error) {
+                console.error(error);
+                resultsDiv.innerHTML = "Access Denied or Not Found";
+            }
+        });
+    </script>
+</body>
+</html>

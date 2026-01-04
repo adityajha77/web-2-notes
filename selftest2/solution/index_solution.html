@@ -1,0 +1,23 @@
+document.getElementById('searchBtn').addEventListener('click', async () => {
+    const queryText = document.getElementById('queryInput').value;
+    const resultsDiv = document.getElementById('results');
+
+    try {
+        // TODO 3: Axios with Config
+        const response = await axios.get('http://localhost:3000/search', {
+            params: { q: queryText },         // Becomes ?q=value
+            headers: { 'x-vip-token': 'super-secret' } // Authorization
+        });
+
+        // Render
+        resultsDiv.innerHTML = '';
+        response.data.forEach(item => {
+            const p = document.createElement('p');
+            p.textContent = `${item.name} - $${item.price}`;
+            resultsDiv.appendChild(p);
+        });
+
+    } catch (error) {
+        resultsDiv.innerHTML = '<span style="color:red">Access Denied! Check your headers.</span>';
+    }
+});
