@@ -1,0 +1,44 @@
+<!-- 
+frontend to hit the backeend  -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script>
+async function sendRequest() {
+    const response = await axios.post("http://localhost:3000/sum", {
+        a: document.getElementById("a").value,
+        b: document.getElementById("b").value
+    });
+
+    console.log(response.data.sum);
+}
+
+
+    </script>
+
+</head>
+<body>
+    <input id="a" type="text" placeholder="first value"></input>
+    <input id="b" type="text" placeholder="second value"></input>
+    <button onclick="sendRequest()">send</button>
+    <script>
+
+    </script>
+</body>
+</html>
+<!-- 
+if we directly do the run like ussually running the node and openning the html and click on the find sum we will get the error
+Access to XMLHttpRequest at 'http://localhost:3000/sum' from origin 'http://127.0.0.1:5500' has been blocked by CORS policy:
+ Response to preflight request doesn't pass access control check:
+ No 'Access-Control-Allow-Origin' header is present on the requested resource. -->
+<!-- so make the public folder and put your html to public and run now npx serve -->
+ <!-- cors present in the browser or in background across the domain -->
+
+ <!-- so we use cors in the backend js file
+ ho to use just install the cors lib
+ apply same as expresss 
+ and app.use (cors()) -->
