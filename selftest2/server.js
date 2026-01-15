@@ -17,10 +17,18 @@ const products = [
 // 2. If it equals 'super-secret', call next().
 // 3. If not, return status 403 with error "Access Denied".
 
-const vipCheck = (req, res, next) => {
-    // Write code...
-};
+function vipCheck(req,res,next){
+    const token =req.headers['x-vip-token'];
+    if(token==='super-secret'){
+         next();
+    }
+    else{
+        res.status(403).send("Access Denied");
+    }
+}
 
+//app.use(vipCheck);
+    
 // --- TODO 2: Search Route with Query ---
 // Create a GET route '/search'.
 // 1. Add 'vipCheck' as middleware for this route.
@@ -29,7 +37,13 @@ const vipCheck = (req, res, next) => {
 // 4. Return the filtered list.
 
 app.get('/search', vipCheck, (req, res) => {
-    // Write code...
+ 
+    const query =req.query.q || '';
+    const filtered=products.filter(u=>u.name.toLowerCase().includes(query.toLowerCase()));
+    res.json({
+    filter:filtered
 });
+});
+
 
 app.listen(PORT, () => console.log(`VIP Server running on ${PORT}`));

@@ -8,13 +8,13 @@
 <body>
     <h1>VIP Product Search</h1>
     
-    <input type="text" id="queryInput" placeholder="Search product...">
+    <input type="text" id="queryText" placeholder="Search product...">
     <button id="searchBtn">Search</button>
 
     <div id="results"></div>
 
     <script>
-        const resultsDiv = document.getElementById('results');
+
 
         // --- TODO 3: Axios with Headers & Params ---
         // Add click listener to 'searchBtn'.
@@ -26,12 +26,23 @@
         // 4. Render the results or alert "Access Denied" if it fails.
 
         document.getElementById('searchBtn').addEventListener('click', async () => {
+            const resultsDiv = document.getElementById('results');
+        const queryText= document.getElementById("queryText").value;
             try {
                 // Write Axios code here...
                 
-                
+                const response=await axios.get('http://localhost:3000/search',{
+                    params: { q: queryText },        
+                    headers: { 'x-vip-token': 'super-secret' } 
+                });
                 // Render code...
                 // (Clear resultsDiv, loop through response.data, create elements)
+                resultsDiv.innerHTML = '';
+                response.data.filter.forEach(item => {
+                const p = document.createElement('p');
+                p.textContent = `${item.name} - $${item.price}`;
+                resultsDiv.appendChild(p);
+        });
 
             } catch (error) {
                 console.error(error);
