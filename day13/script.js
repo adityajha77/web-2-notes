@@ -7,8 +7,29 @@ app.use(express.json());
 
 const users=[];
 
+function auth(req,res,next){
+     const token=req.headers.token; //sends the jwt 
+    const decodedinformation=jwt.verify(token,JWT_SECRET); //have the username we are verifying with the secret not decoding
+    const username=decodedinformation.username;
+    if(username){
+        req.username=username;
+        next();
+    }
+    else{
+        res.send(404).send("you are  not logged in")
+    }
+}
 
-app.post('/signin',function(req,res){
+function logger(req,res,next){
+    console.log(req.method + "request came");
+    next();
+}
+
+app.get('/',function(req,res){
+    res.sendFile(__dirname + "/index.html")
+})
+
+app.post('/signin',logger,function(req,res){
     const username=req.body.username;
     const password=req.body.password;
     const user=users.find(u=>u.username===username && u.password===password)
@@ -26,7 +47,7 @@ app.post('/signin',function(req,res){
    })
 })
 
-app.post('/signup',(req,res)=>{
+app.post('/signup',logger,(req,res)=>{
        const username=req.body.username;
     const password=req.body.password;
 
@@ -43,7 +64,7 @@ app.post('/signup',(req,res)=>{
         return;
     }
     if(users.find(u=>u.username===username)){
-        res.json({
+        return res.json({
             message:"already exists"
         })
     }
@@ -56,17 +77,16 @@ app.post('/signup',(req,res)=>{
         })
 })
 
-app.get('/getusers',function(req,res){
+app.get('/getusers',logger,function(req,res){
     res.send(users);
 })
 
-app.get('/me',function(req,res){
-    const token=req.headers.token; //sends the jwt 
-    const decodedinformation=jwt.verify(token,JWT_SECRET); //have the username we are verifying with the secret not decoding
-    const username=decodedinformation.username;
-    const user=users.find(u=>u.username==username)
+app.get('/me',logger,auth,function(req,res){
+    
+    const user=users.find(u=>u.username==req.username)
     if(user){
-        res.send(username)
+        res.json({ username: user.username })
+
     }
     else{
         res.status(404).send("token invalid")
@@ -76,5 +96,8 @@ app.get('/me',function(req,res){
 
 app.listen(3000);
 
+
+//PASSPORT LIBRARY JS
+//COOKIES OAUTH LEARN THESE
 
 

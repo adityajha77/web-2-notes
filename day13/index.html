@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AUTH WEBSITE</title>
+</head>
+<style>
+    body{
+        background: black;
+        color: white;
+        
+    }
+</style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+   async function signup(){
+        const username=document.getElementById("signup-username").value;
+        const password=document.getElementById("signup-password").value; //getting the value which is given by the user in the fe
+        //now we have to send the values using fetch or axios we using the axios here
+        await axios.post("http://localhost:3000/signup",{
+            username:username,
+            password:password
+        });
+        alert("you are signed up")
+    }
+
+    async function signin(){
+        const username=document.getElementById("signin-username").value;
+        const password=document.getElementById("signin-password").value;
+        const response= await axios.post("http://localhost:3000/signin",{
+            username:username,
+            password:password
+        });
+        if (response.data.token) {
+        localStorage.setItem("token", response.data.token);
+        alert("You are signed in");
+    } else {
+        alert(response.data.message);
+    }
+    }
+
+    async function getuserdetails(){
+        const response= await axios.get("http://localhost:3000/me",{
+            headers:{
+                token:localStorage.getItem("token")
+            }
+        })
+        document.getElementById("information").innerHTML="USERNAME: " + response.data.username ; 
+    }
+    getuserdetails();
+
+    function logout(){
+        localStorage.removeItem("token");
+        alert("success fully logged out")
+    }
+
+</script>
+
+
+<body>
+    
+    <div>
+        <input id="signup-username" type="text" name="username" placeholder="username">
+        <input id="signup-password" type="text" name="password" placeholder="password">
+        <button onclick="signup()">submit</button>
+    </div>
+
+     <div>
+        <input id="signin-username" type="text" name="username" placeholder="username">
+        <input id="signin-password" type="text" name="password" placeholder="password">
+        <button onclick="signin()">submit</button>
+    </div>
+    USER INFO:
+    <button onclick="getuserdetails()">USERS DEATAILS</button>
+    <div id="information"></div>
+
+    <div>
+        <button onclick="logout()">LOGOUT</button>
+    </div>
+    
+</body>
+</html>
+
