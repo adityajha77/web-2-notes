@@ -1,91 +1,142 @@
+const authSection = document.getElementById("auth-section");
+const dashboardView = document.getElementById("dashboard-view");
+const tasksInput = document.getElementById("task-input");
+const tasksPriority = document.getElementById("task-priority");
+const buttonaddtask = document.getElementById("btn-add-task");
+const tasksContainer = document.getElementById("tasks-container");
+const username = document.getElementById("username");
+const password = document.getElementById("password");
+const loginbtn = document.getElementById("btn-login-action");
+const btnlogout=document.getElementById("btn-logout");
 
+// ================= UI =================
+function showLogin() {
+    authSection.classList.remove("hidden");
+    dashboardView.classList.add("hidden");
+}
 
-const tasksInput=document.getElementById("task-input");
-const tasksPriority=document.getElementById("task-priority");
-const buttonaddtask=document.getElementById("btn-add-task");
-const tasksContainer=document.getElementById("tasks-container");
+function showDashboard() {
+    authSection.classList.add("hidden");
+    dashboardView.classList.remove("hidden");
+}
 
+// ================= AUTH FETCH HELPER =================
+function authFetch(url, options = {}) {
+    const token = localStorage.getItem("token");
 
+    return fetch(url, {
+        ...options,
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+            ...(options.headers || {})
+        }
+    });
+}
+
+// ================= LOAD TASKS =================
 async function loadtasks() {
     try {
-        const response = await fetch('/api/tasks');
+        const response = await authFetch("/api/tasks");
         const data = await response.json();
 
-        tasksContainer.innerHTML = '';
+        tasksContainer.innerHTML = "";
 
         data.forEach(task => {
-            const taskItem = document.createElement('div');
+            const taskItem = document.createElement("div");
             taskItem.className = `task-item priority-${task.priority}`;
 
-            const info = document.createElement('div');
-            info.className = 'task-info';
+            const info = document.createElement("div");
+            info.className = "task-info";
 
-            const text = document.createElement('p');
+            const text = document.createElement("p");
             text.textContent = task.text;
 
-            const small = document.createElement('small');
+            const small = document.createElement("small");
             small.textContent = `Priority: ${task.priority}`;
 
             info.append(text, small);
 
-            const actions = document.createElement('div');
-            actions.className = 'task-actions';
+            const actions = document.createElement("div");
+            actions.className = "task-actions";
 
+            const btn = document.createElement("button");
+            btn.className = "btn-delete";
+            btn.textContent = "Done";
 
-            const btn = document.createElement('button');
-            btn.className = 'btn-delete';
-            btn.textContent = 'Done';
-
-            btn.onclick = async function() {
+            btn.onclick = async () => {
                 if (!confirm("Did you finish this task?")) return;
 
-                try {
-                    await fetch(`/api/tasks/${task.id}`, { 
-                        method: 'DELETE' 
-                    });
-                    loadtasks();
-                    
-                } catch (error) {
-                    console.error("Error deleting:", error);
-                }
+                await authFetch(`/api/tasks/${task.id}`, {
+                    method: "DELETE"
+                });
+
+                loadtasks();
             };
 
             actions.appendChild(btn);
-
-            taskItem.append(info, actions);//parent thats why append
+            taskItem.append(info, actions);
             tasksContainer.appendChild(taskItem);
         });
-
-    } catch (error) {
-        console.error("error fetching tasks", error);
+    } catch (err) {
+        console.error("Error loading tasks", err);
     }
 }
 
+// ================= ADD TASK =================
+buttonaddtask.addEventListener("click", async () => {
+    const text = tasksInput.value;
+    const priority = tasksPriority.value;
 
- 
-buttonaddtask.addEventListener('click', async function () {
-     const text=tasksInput.value;
-   const priority=tasksPriority.value;
-    try {
-        const response = await fetch('/api/tasks', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ text, priority })
-        });
+    if (!text) return alert("Enter task");
 
-        const data = await response.json();
-        console.log("Success:", data);
-        alert("Task saved!");
+    await authFetch("/api/tasks", {
+        method: "POST",
+        body: JSON.stringify({ text, priority })
+    });
+
+    tasksInput.value = "";
+    loadtasks();
+});
+
+// ================= LOGIN =================
+loginbtn.addEventListener("click", async () => {
+    const response = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            username: username.value,
+            password: password.value
+        })
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+        localStorage.setItem("token", data.token);
+        showDashboard();
         loadtasks();
-
-
-    } catch (error) {
-        console.error("Error:", error);
+    } else {
+        alert("Invalid credentials");
     }
 });
 
-loadtasks();
+//===================logout==================
 
+btnlogout.addEventListener("click", async () => {
+  localStorage.removeItem("token");
+  showLogin();
+});
+
+
+// ================= AUTO LOGIN =================
+const token = localStorage.getItem("token");
+if (token) {
+    showDashboard();
+    loadtasks();
+} else {
+    showLogin();
+}
 
 // buttonaddtask.addEventListener('click', async function () {
 //     const text=tasksInput.value;
@@ -141,3 +192,7 @@ loadtasks();
 //     action.append(info,action);//parent
 //     tasksContainer.appendChild(taskItem);//child of tasksContainer
 // })
+
+// What authFetch actually is
+
+// A helper function that automatically attaches JWT to requests
