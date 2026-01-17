@@ -8,6 +8,7 @@ const username = document.getElementById("username");
 const password = document.getElementById("password");
 const loginbtn = document.getElementById("btn-login-action");
 const btnlogout=document.getElementById("btn-logout");
+const btntask=document.getElementById("btn-tasks");
 
 // ================= UI =================
 function showLogin() {
@@ -137,6 +138,10 @@ if (token) {
 } else {
     showLogin();
 }
+
+btntask.addEventListener('click',async()=>{
+    alert("tasks working")
+})
 
 // buttonaddtask.addEventListener('click', async function () {
 //     const text=tasksInput.value;
