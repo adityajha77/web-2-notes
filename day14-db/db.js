@@ -5,9 +5,9 @@ const Schema=mongoose.Schema;//IMPORTING FROM MONGOOSE
 const ObjectId=Schema.ObjectId;//IMPORTING FROM MONGOOSE
 
 const User=new Schema({
-    name:String,
-    email:String,
-    password:String
+    email:{type:String,unique:true},
+    password:String,
+     name:String
 });
 
 const Todo=new Schema({
