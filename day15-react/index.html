@@ -1,0 +1,59 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<script>
+    function onButtonpress(){
+        const currentValue=document.getElementById("btn").innerHTML;
+        const currentCounter=currentValue.split(" ")[1];
+        const newcounter=parseInt(currentCounter)+1;
+        document.getElementById('btn').innerHTML="Counter " + newcounter
+    }
+
+</script>
+<body>
+    <button onclick="onButtonpress()" id="btn">Counter 0</button>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="buttonParent">
+
+    </div>
+    <script>
+        let state={
+            count:0
+        }
+        function onButtonPress(){
+            state.count=state.count + 1; 
+            buttonComponentReRender()
+        }
+
+        function buttonComponentReRender(){
+            document.getElementById("buttonParent").innerHTML="";
+            const component=buttonComponent(state.count);
+            document.getElementById("buttonParent").appendChild(component);
+        }
+
+        function buttonComponent(count){
+            const button=document.createElement("button");
+            button.innerHTML="Counter " + count;
+            button.setAttribute("onclick",`onButtonPress()`);
+            return button;
+        } //return the html look like 
+        //<button onclick="onButtonPress">Counter 3</button>
+        buttonComponentReRender();
+    </script>
+    
+</body>
+</html>

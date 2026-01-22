@@ -24,7 +24,7 @@ app.post("/signup",async function(req,res){
      
      if(!checkIncomingData.success){
        
-        res.status(400).json({
+        return res.status(400).json({
             message:"please check the input field data"
         })
      }
