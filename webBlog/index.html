@@ -10,10 +10,20 @@
 <body>
 
     <div class="container"></div>
+    <div class="auth-container" id="blog-box" style="display:none">
+    <h2>Create Blog</h2>
+
+    <input id="blog-title" placeholder="Title" />
+    <textarea id="blog-content" placeholder="Content"></textarea>
+
+    <button onclick="createBlog()">Publish</button>
+    <button onclick="logout()">Logout</button>
+</div>
+
 
     <div class="center-wrapper">
 
-        <div class="book" id="book-trigger">
+        <div class="book" id="book-trigger" onclick="showLogin()">
             <div class="inner">
                 <p class="text">Click to Enter</p>
             </div>
@@ -29,6 +39,7 @@
                 type="text"
                 id="name"
                 placeholder="Name (Signup only)"
+                style="display:none"
             >
 
             <input
