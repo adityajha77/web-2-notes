@@ -17,3 +17,10 @@
 //anything start with use is a hook
 //some more jargons VDOM  DIFFING BULK UPDATES RECONCILLATION
 //npm create vite@lates to install the react in your codebase
+
+
+//useState is use to chanse some value inside the whole function it cant be run independently at the top bucz react dont know thw variables how its value change it only tarack the states
+//side effect are not from the div or from the component theses are not from input output requestion like example
+//dom mannualy suscribbbing the events using websockets fetch the api server etc
+//why we need useeffect if we not use then whenever the react rerender then always it call the let say fetch setInterval etc 
+//so we nned some thing to handle this that is use effect 

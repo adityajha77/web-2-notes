@@ -1,0 +1,1 @@
+// do same as linkdin for todo and use fetch and take data from the jsonplaceholder website

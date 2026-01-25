@@ -1,6 +1,8 @@
 import { useState } from "react";
 import Profile from "./Profile";
 import PostList from "./PostList";
+import Notification from "../notification";
+import Linkdin from "../linkdin";
 
 function App() {
   const [posts, setPosts] = useState([
@@ -28,6 +30,8 @@ function App() {
 
   return (
     <div style={{ backgroundColor: "black", minHeight: "100vh", padding: 20 }}>
+      <Linkdin />
+      <Notification />
       <button onClick={addPost}>Add Post</button>
 
       <Profile name="KRATOS" />
