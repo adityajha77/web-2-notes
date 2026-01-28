@@ -50,3 +50,5 @@ export default App;
 
 
 //execution Click button → setTodo → re-render → useEffect → fetch → update UI
+//we can aslo add cleaups in useEstate that tell unsuscribe the current secnario and go to the specific place .
+//using the return in useEffect and clearInterval
