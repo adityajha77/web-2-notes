@@ -49,3 +49,4 @@ function App(){
 export default App;
 
 
+//execution Click button → setTodo → re-render → useEffect → fetch → update UI
