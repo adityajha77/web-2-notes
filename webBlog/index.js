@@ -95,6 +95,13 @@ app.post("/blogpost", auth, async function (req, res) {
     }
 });
 
+app.get("/blogpost",auth,async function(req,res){
+    const blogPosts= await BlogModel.find({
+        authorId:req.userId
+    });
+    res.send(blogPosts);
+})
+
 // Start Server
 connectdatabase();
 app.listen(3000, () => console.log("Server running on port 3000"));

@@ -4,32 +4,44 @@
 
 
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 function App(){
-    const [currentTab,setCurrentTab]=useState(null);
-    async function getTodo(id){
+    const [storedData,dataTobeStored]=useState(null);
+    const [getTodo,setTodo]=useState(null);
+    const [loading,setloading]=useState(false);
+
+
+    useEffect(()=>{
+        if (getTodo === null) return;
+        
+         async function ggetTodo(id){
+            setloading(true);
         const res= await fetch(`https://jsonplaceholder.typicode.com/todos/${id}`);
         const data= await res.json();
-            setCurrentTab(data);
+            dataTobeStored(data);
+            setloading(false);
     }
+    ggetTodo(getTodo);
+},[getTodo])
     
 
 
     return (
         <div style={{padding:20}}>
             
-                <button onClick={()=>getTodo(1)}>Todo1</button>
-                <button onClick={()=>getTodo(2)}>Todo2</button>
-                <button onClick={()=>getTodo(3)}>Todo3</button>
-                <button onClick={()=>getTodo(4)}>Todo4</button>
-            {currentTab && (
+                <button onClick={()=>setTodo(1)}>Todo1</button>
+                <button onClick={()=>setTodo(2)}>Todo2</button>
+                <button onClick={()=>setTodo(3)}>Todo3</button>
+                <button onClick={()=>setTodo(4)}>Todo4</button>
+            {loading ? ( "LOADING..." ) :
+                storedData ? (
                 <div style={{marginTop:20}}>
-                    <p>TITLE={currentTab.title}</p>
-                    <p>Id={currentTab.id}</p>
-                    <p>USERID={currentTab.userId}</p>
+                    <p>TITLE={storedData.title}</p>
+                    <p>Id={storedData.id}</p>
+                    <p>USERID={storedData.userId}</p>
                 </div>
-            )}
+            ) : null}
         </div>
     )
 }
